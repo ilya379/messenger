@@ -1,8 +1,8 @@
 package arhangel.dim.lections.socket;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import com.sun.deploy.util.StringUtils;
+
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -15,23 +15,50 @@ public class Client {
 
     public static void main(String[] args) {
 
+        BufferedReader stdIn =
+                new BufferedReader(
+                        new InputStreamReader(System.in));
         Socket socket = null;
         try {
             socket = new Socket(HOST, PORT);
+            socket.getOutputStream();
+            socket.getOutputStream();
+            try (
+                    ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                    InputStream in = socket.getInputStream()) {
 
-            try (InputStream in = socket.getInputStream();
-                 OutputStream out = socket.getOutputStream()) {
+                String inputLine;
+                String outputLine;
 
-                String line = "Hello!";
-                out.write(line.getBytes());
-                out.flush();
+                out.writeObject("Hello");
 
-                byte[] data = new byte[32 * 1024];
-                int readBytes = in.read(data);
+                final byte[] buf = new byte[1024 * 64];
+                //log.info("Starting listener thread...");
+                while (!Thread.currentThread().isInterrupted()) {
+                    try {
+                        // Здесь поток блокируется на ожидании данных
+                        int read = in.read(buf);
+                        if (read > 0) {
+                            inputLine = new String(buf, 0 ,read);
 
-                System.out.printf("Server> %s", new String(data, 0, readBytes));
+                            System.out.println("Client received: "+ inputLine);
+                            String fromUser = stdIn.readLine();
+                            if (fromUser != null && !fromUser.equals("")) {
+
+                                System.out.println("Client: " + fromUser);
+                                out.writeObject(fromUser);
+                            }
+
+                        }
+                    } catch (Exception e) {
+                        //log.error("Failed to process connection: {}", e);
+                        e.printStackTrace();
+                        Thread.currentThread().interrupt();
+                    }
+                }
 
             }
+
 
         } catch (IOException e) {
             e.printStackTrace();

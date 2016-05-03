@@ -14,4 +14,6 @@ public interface Command {
      * @throws CommandException - все исключения перебрасываются как CommandException
      */
     void execute(Session session, Message message) throws CommandException;
+
+    Type getSupportedType();
 }

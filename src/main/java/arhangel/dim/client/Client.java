@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import arhangel.dim.core.net.protocol.Protocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,8 +17,7 @@ import arhangel.dim.core.messages.Message;
 import arhangel.dim.core.messages.TextMessage;
 import arhangel.dim.core.messages.Type;
 import arhangel.dim.core.net.ConnectionHandler;
-import arhangel.dim.core.net.Protocol;
-import arhangel.dim.core.net.ProtocolException;
+import arhangel.dim.core.net.protocol.ProtocolException;
 
 /**
  * Клиент для тестирования серверного приложения
@@ -90,8 +90,8 @@ public class Client implements ConnectionHandler {
                     if (read > 0) {
 
                         // По сети передается поток байт, его нужно раскодировать с помощью протокола
-                        Message msg = protocol.decode(Arrays.copyOf(buf, read));
-                        onMessage(msg);
+                        /*Message msg = protocol.decode(Arrays.copyOf(buf, read));
+                        onMessage(msg);*/
                     }
                 } catch (Exception e) {
                     log.error("Failed to process connection: {}", e);
@@ -147,7 +147,7 @@ public class Client implements ConnectionHandler {
     @Override
     public void send(Message msg) throws IOException, ProtocolException {
         log.info(msg.toString());
-        out.write(protocol.encode(msg));
+        //out.write((byte[])protocol.encode(msg));
         out.flush(); // принудительно проталкиваем буфер с данными
     }
 

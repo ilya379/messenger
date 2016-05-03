@@ -1,12 +1,13 @@
 package arhangel.dim.core.net;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
-
 import arhangel.dim.core.User;
+import arhangel.dim.core.messages.CommandException;
+import arhangel.dim.core.messages.CommandRepository;
 import arhangel.dim.core.messages.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Здесь храним всю информацию, связанную с отдельным клиентом.
@@ -14,6 +15,18 @@ import arhangel.dim.core.messages.Message;
  * - сокеты на чтение/запись данных в канал пользователя
  */
 public class Session implements ConnectionHandler {
+    private Logger logger;
+    private static AtomicLong counter = new AtomicLong(1);
+
+    /**
+     * id сессии (для логгирования)
+     */
+    private Long id;
+
+    public Session() {
+        id = counter.getAndIncrement();
+        logger  = LoggerFactory.getLogger("Session-" + id);
+    }
 
     /**
      * Пользователь сессии, пока не прошел логин, user == null
@@ -21,27 +34,48 @@ public class Session implements ConnectionHandler {
      */
     private User user;
 
-    // сокет на клиента
-    private Socket socket;
+    private MessageManager manager;
 
-    /**
-     * С каждым сокетом связано 2 канала in/out
-     */
-    private InputStream in;
-    private OutputStream out;
+    private boolean closed = false;
 
-    @Override
-    public void send(Message msg) throws ProtocolException, IOException {
-        // TODO: Отправить клиенту сообщение
+    public Session(MessageManager manager) {
+        this.manager = manager;
     }
+
 
     @Override
     public void onMessage(Message msg) {
-        // TODO: Пришло некое сообщение от клиента, его нужно обработать
+        try {
+            CommandRepository.getCommand(msg.getType()).execute(this, msg);
+        } catch (CommandException e) {
+            logger.error("Ошибка при выполнении команды "+ msg.getType(), e);
+        }
     }
 
-    @Override
+    public void send(Message msg) {
+        try {
+            manager.sendMessage(msg);
+        } catch (Exception e) {
+            closed = true;
+            close();
+            throw new SessionClosedException(e);
+        }
+    }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
     public void close() {
-        // TODO: закрыть in/out каналы и сокет. Освободить другие ресурсы, если необходимо
+        closed = true;
+        manager.close();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

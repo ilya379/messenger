@@ -1,10 +1,11 @@
 package arhangel.dim.lections.socket;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import arhangel.dim.core.messages.Message;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 
 
 /**
@@ -26,17 +27,42 @@ public class Server {
 
             System.out.println("Accepted. " + socket.getInetAddress());
 
-            try (InputStream in = socket.getInputStream();
-                 OutputStream out = socket.getOutputStream()) {
+            try (
+                    ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                    ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
 
+                String inputLine;
+                String outputLine;
 
-                byte[] buf = new byte[32 * 1024];
-                int readBytes = in.read(buf);
-                String line = new String(buf, 0, readBytes);
-                System.out.printf("Client>%s", line);
+                final byte[] buf = new byte[1024 * 64];
+                //log.info("Starting listener thread...");
+                while (!Thread.currentThread().isInterrupted()) {
+                    try {
+                        // Здесь поток блокируется на ожидании данных
+                        /*int read = in.read(buf);
 
-                out.write(line.getBytes());
-                out.flush();
+                        if (read > 0) {
+                            inputLine = new String(buf, 0 ,read);
+                            System.out.println("Принял: " + inputLine);
+
+                            out.write(("HAHA "+ inputLine).getBytes());
+                            if (inputLine.equals("Bye."))
+                                break;
+
+                        } else
+                            System.out.println("Nothing to read: "+ read);*/
+                        inputLine = (String) in.readObject();
+                        System.out.println("Принял: " + inputLine);
+                        out.writeObject(inputLine+ "haha");
+                        if (inputLine.equals("Bye."))
+                            break;
+                    } catch (Exception e) {
+                        //log.error("Failed to process connection: {}", e);
+                        e.printStackTrace();
+                        Thread.currentThread().interrupt();
+                    }
+                }
+                out.writeObject("Bye.");
             }
 
         } catch (IOException e) {

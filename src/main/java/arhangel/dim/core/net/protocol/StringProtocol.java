@@ -1,4 +1,4 @@
-package arhangel.dim.core.net;
+package arhangel.dim.core.net.protocol;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,6 +6,10 @@ import org.slf4j.LoggerFactory;
 import arhangel.dim.core.messages.Message;
 import arhangel.dim.core.messages.TextMessage;
 import arhangel.dim.core.messages.Type;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Простейший протокол передачи данных
@@ -16,7 +20,6 @@ public class StringProtocol implements Protocol {
 
     public static final String DELIMITER = ";";
 
-    @Override
     public Message decode(byte[] bytes) throws ProtocolException {
         String str = new String(bytes);
         log.info("decoded: {}", str);
@@ -34,7 +37,6 @@ public class StringProtocol implements Protocol {
         }
     }
 
-    @Override
     public byte[] encode(Message msg) throws ProtocolException {
         StringBuilder builder = new StringBuilder();
         Type type = msg.getType();
@@ -61,5 +63,15 @@ public class StringProtocol implements Protocol {
             // who care
         }
         return null;
+    }
+
+    @Override
+    public Message decode(InputStream inputStream) throws ProtocolException, IOException {
+        return null;
+    }
+
+    @Override
+    public void encode(Message msg, OutputStream outputStream) throws ProtocolException, IOException {
+
     }
 }

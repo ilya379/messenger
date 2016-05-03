@@ -6,8 +6,9 @@ import java.io.Closeable;
  *
  */
 public class IoUtil {
+    private IoUtil() {}
 
-    static void closeQuietly(Closeable res) {
+    public static void closeQuietly(Closeable res) {
         if (res != null) {
             try {
                 res.close();
@@ -17,7 +18,7 @@ public class IoUtil {
         }
     }
 
-    static void closeQuietly(Closeable... list) {
+    public static void closeQuietly(Closeable... list) {
         for (Closeable res : list) {
             closeQuietly(res);
         }

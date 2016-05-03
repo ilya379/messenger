@@ -1,4 +1,4 @@
-package arhangel.dim.core.net;
+package arhangel.dim.core.net.protocol;
 
 /**
  *

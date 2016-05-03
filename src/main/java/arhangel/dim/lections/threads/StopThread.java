@@ -87,7 +87,7 @@ public class StopThread {
 
     public static void main(String[] args) throws Exception {
         //flagThread();
-        //interruptThread();
-        dummyThread();
+        interruptThread();
+        //dummyThread();
     }
 }

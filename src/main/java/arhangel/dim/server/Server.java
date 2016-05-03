@@ -1,11 +1,14 @@
 package arhangel.dim.server;
 
-import arhangel.dim.core.net.Protocol;
+import arhangel.dim.core.net.protocol.Protocol;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Основной класс для сервера сообщений
  */
 public class Server {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     public static final int DEFAULT_MAX_CONNECT = 16;
 
@@ -16,6 +19,11 @@ public class Server {
 
     public void stop() {
         // TODO: закрыть все сетевые подключения, остановить потоки-обработчики, закрыть ресурсы, если есть.
+    }
+
+    public void start() {
+        logger.info("Start server on port " + port);
+
     }
 
 }

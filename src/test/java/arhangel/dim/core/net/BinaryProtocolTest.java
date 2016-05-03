@@ -1,5 +1,7 @@
 package arhangel.dim.core.net;
 
+import arhangel.dim.core.net.protocol.Protocol;
+import arhangel.dim.core.net.protocol.StringProtocol;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,7 +16,7 @@ public class BinaryProtocolTest {
 
     @Test
     public void decode() throws Exception {
-        Protocol protocol = new StringProtocol();
+        StringProtocol protocol = new StringProtocol();
         TextMessage message = new TextMessage();
         message.setText("Hello");
         message.setSenderId(1L);

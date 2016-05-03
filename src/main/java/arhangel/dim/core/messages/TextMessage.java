@@ -8,6 +8,10 @@ import java.util.Objects;
 public class TextMessage extends Message {
     private String text;
 
+    public TextMessage() {
+        type = Type.MSG_TEXT;
+    }
+
     public String getText() {
         return text;
     }
