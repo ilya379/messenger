@@ -1,6 +1,6 @@
 package arhangel.dim.core.store;
 
-import arhangel.dim.core.User;
+import arhangel.dim.core.model.User;
 
 /**
  * Хранилище информации о пользователе
@@ -10,6 +10,7 @@ public interface UserStore {
     /**
      * Добавить пользователя в хранилище
      * Вернуть его же
+     * Вернуть null если пользователь с таким login уже существует
      */
     User addUser(User user);
 

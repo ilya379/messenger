@@ -1,11 +1,14 @@
-package arhangel.dim.core.messages;
+package arhangel.dim.core.commands;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import arhangel.dim.core.messages.Type;
+
 import javax.annotation.PostConstruct;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -19,11 +22,14 @@ import java.util.stream.Collectors;
 public class CommandRepository {
     private Map<Type, Command> commands = new HashMap<>();
     private Logger logger = LoggerFactory.getLogger(getClass());
+    private static CommandRepository instance = null;
 
-    public CommandRepository() {}
+    public CommandRepository() {
+    	instance = this;
+    }
 
-    public Command getCommand(Type type) {
-        return commands.get(type);
+    public static Command getCommand(Type type) {    	
+        return instance.commands.get(type);
     }
 
     @PostConstruct

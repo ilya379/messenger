@@ -7,8 +7,8 @@ import java.util.Objects;
  * Базовый класс для всех сообщений
  */
 public abstract class Message implements Serializable {
-
-    protected Long id;
+	private static final long serialVersionUID = 7370994553488547004L;
+	protected Long id;
     protected Long senderId;
     protected Type type;
 

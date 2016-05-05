@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import arhangel.dim.core.User;
+import arhangel.dim.core.model.User;
 
 public class JdbcExample {
 

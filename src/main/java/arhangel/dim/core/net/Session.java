@@ -1,9 +1,10 @@
 package arhangel.dim.core.net;
 
-import arhangel.dim.core.User;
-import arhangel.dim.core.messages.CommandException;
-import arhangel.dim.core.messages.CommandRepository;
+import arhangel.dim.core.commands.CommandException;
+import arhangel.dim.core.commands.CommandRepository;
 import arhangel.dim.core.messages.Message;
+import arhangel.dim.core.model.User;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,12 +22,7 @@ public class Session implements ConnectionHandler {
     /**
      * id сессии (для логгирования)
      */
-    private Long id;
-
-    public Session() {
-        id = counter.getAndIncrement();
-        logger  = LoggerFactory.getLogger("Session-" + id);
-    }
+    private final Long id;
 
     /**
      * Пользователь сессии, пока не прошел логин, user == null
@@ -39,6 +35,8 @@ public class Session implements ConnectionHandler {
     private boolean closed = false;
 
     public Session(MessageManager manager) {
+    	id = counter.getAndIncrement();
+        logger  = LoggerFactory.getLogger("Session-" + id);
         this.manager = manager;
     }
 

@@ -1,7 +1,5 @@
 package arhangel.dim.lections.socket;
 
-import com.sun.deploy.util.StringUtils;
-
 import java.io.*;
 import java.net.Socket;
 

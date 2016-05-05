@@ -1,16 +1,15 @@
 package arhangel.dim.core.net;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import arhangel.dim.core.messages.Message;
 import arhangel.dim.core.net.protocol.Protocol;
 import arhangel.dim.core.net.protocol.ProtocolException;
 import arhangel.dim.lections.socket.IoUtil;
-import com.sun.istack.internal.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
 
 /**
  * Created by eaglesh on 10.04.16.
@@ -23,7 +22,7 @@ public class MessageManager<I extends InputStream, O extends OutputStream> {
 
     protected Protocol<I, O> protocol;
 
-    public MessageManager(@NotNull I inputStream, @NotNull O outputStream) {
+    public MessageManager(I inputStream, O outputStream) {
         this.inputStream = inputStream;
         this.outputStream = outputStream;
     }

@@ -2,8 +2,8 @@ package arhangel.dim.core.store;
 
 import java.util.List;
 
-import arhangel.dim.core.Chat;
 import arhangel.dim.core.messages.Message;
+import arhangel.dim.core.model.Chat;
 
 /**
  * Хранилище информации о сообщениях

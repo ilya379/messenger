@@ -10,13 +10,13 @@ public enum Type {
     MSG_CHAT_LIST, // MSG_CHAT_LIST_RESULT,
     MSG_CHAT_CREATE, // status
     MSG_CHAT_HIST, // MSG_CHAT_HIST_RESULT,
+    MSG_USER_CREATE, // MSG_STATUS				--создание пользователя
+    MSG_USER, // MSG_STATUS						--менять никнейм
 
     MSG_STATUS,
     MSG_CHAT_LIST_RESULT,
     MSG_CHAT_HIST_RESULT,
-    MSG_INFO_RESULT,
-
-    MSG_ERROR
+    MSG_INFO_RESULT
 
 
 }
